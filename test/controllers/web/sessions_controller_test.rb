@@ -8,7 +8,7 @@ class Web::SessionsControllerTest < ActionController::TestCase
 
   test 'should post create' do
     password = generate(:string)
-    user = create(:user, { password: password })
+    user = create(:developer, { password: password })
     attrs = {
       email: user.email,
       password: password,
