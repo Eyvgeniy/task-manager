@@ -25,9 +25,9 @@ html lang="en"
         nav.mdl-navigation
           = link_to "Board", board_path, class: 'mdl-navigation__link'
           - if current_user
+            = link_to "Log out", session_path, method: "delete", confirm: "confirm?", class: 'mdl-navigation__link'
             - if current_user.is_a? Admin
               = link_to "Admin page", admin_users_url, class: 'mdl-navigation__link'
-              = link_to "Log out", session_path, method: "delete", confirm: "confirm?", class: 'mdl-navigation__link'
           - else
             = link_to "Sign in", new_session_path, class: 'mdl-navigation__link'
             = link_to "Sign up", new_developer_path, class: 'mdl-navigation__link'
@@ -37,4 +37,4 @@ html lang="en"
     footer#footer.mdl-mini-footer
       .mdl-mini-footer__left-section
         .mdl-logo
-          | &copy; Dualboot Learn 2020
+          | &copy; Dualboot Learn 2021
