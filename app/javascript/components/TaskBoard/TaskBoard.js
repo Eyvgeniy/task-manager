@@ -4,6 +4,7 @@ import { propOr } from 'ramda';
 import '@lourenci/react-kanban/dist/styles.css';
 
 import Task from '../Task';
+import ColumnHeader from '../ColumnHeader'
 import TasksRepository from '../../repositories/TasksRepository';
 
 const STATES = [
@@ -27,7 +28,7 @@ const initialBoard = {
 
 const TaskBoard = () => {
   const [board, setBoard] = useState(initialBoard);
-  const [boardCards, setBoardCards] = useState([]);
+  const [boardCards, setBoardCards] = useState([]);  
   useEffect(() => loadBoard(), []);
   useEffect(() => generateBoard(), [boardCards]);
 
@@ -39,12 +40,21 @@ const TaskBoard = () => {
     });
   };
 
+  const loadColumnMore = (state, page = 1, perPage = 10) => {
+    loadColumn(state, page, perPage).then(({ data }) => {
+      if (data.items.length === 0){
+        setBoard(state => state.columns)
+      }
+    });
+  };
+
   const loadColumnInitial = (state, page = 1, perPage = 10) => {
     loadColumn(state, page, perPage).then(({ data }) => {
       setBoardCards((prevState) => {
         return {
           ...prevState,
           [state]: { cards: data.items, meta: data.meta },
+
         };
       });
     });
@@ -69,7 +79,11 @@ const TaskBoard = () => {
     STATES.map(({ key }) => loadColumnInitial(key));
   };
 
-  return <KanbanBoard renderCard={card => <Task task={card} />}>{board}</KanbanBoard>;
+  return <KanbanBoard
+    renderCard={card => <Task task={card} />} 
+    renderColumnHeader={(column) => <ColumnHeader column={column} onLoadMore={loadColumnMore} />}>
+      {board}
+  </KanbanBoard>;
 };
 
 export default TaskBoard;

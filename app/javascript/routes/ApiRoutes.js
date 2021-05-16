@@ -519,7 +519,7 @@ export const apiV1TaskPath = __jsr.r({"id":{"r":true},"format":{}}, [2,[7,"/"],[
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const apiV1TasksPath = __jsr.r({"format":{}}, [2,[7,"/"],[2,[6,"api"],[2,[7,"/"],[2,[6,"v1"],[2,[7,"/"],[2,[6,"tasks"],[1,[2,[8,"."],[3,"format"]]]]]]]]]);
+export const apiV1TasksPath = __jsr.r({"format":{}}, [2,[7,"/"],[2,[6,"api"],[2,[7,"/"],[2,[6,"v1"],[2,[7,"/"],[2,[6,"tasks.json"],[1,[2,[8,"."],[3,"format"]]]]]]]]]);
 
 /**
  * Generates rails route to
