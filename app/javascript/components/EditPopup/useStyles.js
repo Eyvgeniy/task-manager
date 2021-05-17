@@ -4,6 +4,7 @@ const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
+    width: 465,
   },
   modal: {
     display: 'flex',
@@ -11,16 +12,10 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     outline: 0,
   },
-  
-  root: {
-    width: 465,
-  },
-  
   loader: {
     display: 'flex',
     justifyContent: 'center',
   },
-  
   actions: {
     display: 'flex',
     justifyContent: 'flex-end',

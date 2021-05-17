@@ -67,8 +67,8 @@ const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
               <CircularProgress />
             </div>
           ) : (
-              <Form errors={errors} onChange={setTask} task={task} />
-            )}
+            <Form errors={errors} onChange={setTask} task={task} />
+          )}
         </CardContent>
         <CardActions className={styles.actions}>
           <Button
@@ -96,10 +96,10 @@ const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
 };
 
 EditPopup.propTypes = {
-  cardId: PropTypes.number.isRequired, 
-  onClose: PropTypes.func.isRequired, 
-  onDestroyCard: PropTypes.func.isRequired, 
-  onLoadCard: PropTypes.func.isRequired, 
+  cardId: PropTypes.number.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onDestroyCard: PropTypes.func.isRequired,
+  onLoadCard: PropTypes.func.isRequired,
   onUpdateCard: PropTypes.func.isRequired,
 };
 

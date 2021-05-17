@@ -1,3 +1,3 @@
-import ColumnHeader from "./ColumnHeader";
+import ColumnHeader from './ColumnHeader';
 
 export default ColumnHeader;

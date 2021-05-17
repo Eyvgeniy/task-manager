@@ -50,5 +50,4 @@ Form.defaultProps = {
   errors: {},
 };
 
-
 export default Form;

@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 
-import useStyles from './useStyles' ;
+import useStyles from './useStyles';
 
 const Task = ({ task, onClick }) => {
   const styles = useStyles();
@@ -23,7 +23,7 @@ const Task = ({ task, onClick }) => {
 
   return (
     <Card className={styles.root}>
-      <CardHeader title={task.name} action={action}/>
+      <CardHeader title={task.name} action={action} />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           {task.description}
