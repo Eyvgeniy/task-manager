@@ -13,8 +13,7 @@ const ColumnHeader = ({ column, onLoadMore }) => {
     id,
     title,
     cards,
-    meta: { totalCount, currentPage },
-    allTimes,
+    meta: { totalCount, currentPage, perPage },
   } = column;
 
   const count = cards.length;
@@ -26,7 +25,7 @@ const ColumnHeader = ({ column, onLoadMore }) => {
       <div className={styles.title}>
         <b>{title}</b> ({count}/{totalCount || '…'})
       </div>
-      {!allTimes && 
+      {!(currentPage * perPage > totalCount) && 
       <div className={styles.actions}>
         <IconButton aria-label="Load more" onClick={() => handleLoadMore()}>
           <SystemUpdateAltIcon fontSize="small" />
