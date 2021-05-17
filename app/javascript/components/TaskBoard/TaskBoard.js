@@ -9,6 +9,7 @@ import Task from '../Task';
 import ColumnHeader from '../ColumnHeader';
 import TasksRepository from '../../repositories/TasksRepository';
 import AddPopup from '../AddPopup';
+import EditPopup from '../EditPopup';
 import TaskForm from '../../forms/TaskForm'
 
 import useStyles from './useStyles';
@@ -26,6 +27,7 @@ const STATES = [
 const MODES = {
   ADD: 'add',
   NONE: 'none',
+  EDIT: 'edit',
 };
 
 const initialBoard = {
@@ -40,7 +42,8 @@ const initialBoard = {
 const TaskBoard = () => {
   const [board, setBoard] = useState(initialBoard);
   const [boardCards, setBoardCards] = useState([]);
-  const [mode, setMode] = useState(MODES.NONE); 
+  const [mode, setMode] = useState(MODES.NONE);
+  const [openedTaskId, setOpenedTaskId] = useState(null);
   useEffect(() => loadBoard(), []);
   useEffect(() => generateBoard(), [boardCards]);
 
@@ -52,6 +55,12 @@ const TaskBoard = () => {
   
   const handleClose = () => {
     setMode(MODES.NONE);
+    setOpenedTaskId(null);
+  };
+
+  const handleOpenEditPopup = task => {
+    setOpenedTaskId(task.id);
+    setMode(MODES.EDIT);
   };
 
   const loadColumn = (state, page, perPage) => {
@@ -64,10 +73,13 @@ const TaskBoard = () => {
 
   const loadColumnMore = (state, page = 1, perPage = 10) => {
     loadColumn(state, page, perPage).then(({ data }) => {
-      // TODO Надо реализовать метод
-      // if (data.items.length === 0){
-      //   setBoard(state => state.columns)
-      // }
+      const state = data.items[0].state;
+      setBoardCards((prevState) => {
+        return {
+          ...prevState,
+          [state]: { cards: [ ...prevState[state].cards,...data.items], meta: data.meta },
+        };
+      });
     });
   };
 
@@ -108,8 +120,9 @@ const TaskBoard = () => {
       return null;
     }
   
-    return TasksRepository.update(task.id, { stateEvent: transition.event })
-      .then(() => {
+    return TasksRepository.update(task.id, { task:{ stateEvent: transition.event }})
+      .then((data) => {
+        console.log(data);
         loadColumnInitial(destination.toColumnId);
         loadColumnInitial(source.fromColumnId);
       })
@@ -121,18 +134,35 @@ const TaskBoard = () => {
   const handleTaskCreate = (params) => {
     const attributes = TaskForm.attributesToSubmit(params);
     return TasksRepository.create(attributes).then(({ data: { task } }) => {
-      // TODO реализовать метод
       loadColumnInitial(task.state);
       handleClose();
-      // … loading column with task.state
-      // … close popup
+    });
+  };
+
+  const loadTask = (id) => {
+    return TasksRepository.show(id).then(({ data: { task } }) => task);
+  };
+
+  const handleTaskUpdate = (task) => {
+    const attributes = TaskForm.attributesToSubmit(task);
+
+    return TasksRepository.update(task.id, attributes).then(() => {
+      loadColumnInitial(task.state);
+      handleClose();
+    });
+  };
+
+  const handleTaskDestroy = (task) => {
+    return TasksRepository.destroy(task.id).then(() => {
+      loadColumnInitial(task.state);
+      handleClose();
     });
   };
 
   return(
     <> 
       <KanbanBoard
-        renderCard={card => <Task task={card} />} 
+        renderCard={card => <Task onClick={handleOpenEditPopup} task={card} />} 
         renderColumnHeader={(column) => <ColumnHeader column={column} onLoadMore={loadColumnMore} />}
         onCardDragEnd={handleCardDragEnd}>
           {board}
@@ -141,6 +171,15 @@ const TaskBoard = () => {
         <AddIcon />
       </Fab>
       {mode === MODES.ADD && <AddPopup onCreateCard={handleTaskCreate} onClose={handleClose} />}
+      {mode === MODES.EDIT && (
+        <EditPopup
+          onLoadCard={loadTask}
+          onDestroyCard={handleTaskDestroy}
+          onUpdateCard={handleTaskUpdate}
+          onClose={handleClose}
+          cardId={openedTaskId}
+        />
+      )}
     </>)
 };
 
