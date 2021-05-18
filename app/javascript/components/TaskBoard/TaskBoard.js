@@ -5,12 +5,12 @@ import '@lourenci/react-kanban/dist/styles.css';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
-import Task from '../Task';
-import ColumnHeader from '../ColumnHeader';
-import TasksRepository from '../../repositories/TasksRepository';
-import AddPopup from '../AddPopup';
-import EditPopup from '../EditPopup';
-import TaskForm from '../../forms/TaskForm';
+import Task from 'components/Task';
+import ColumnHeader from 'components/ColumnHeader';
+import AddPopup from 'components/AddPopup';
+import EditPopup from 'components/EditPopup';
+import TasksRepository from 'repositories/TasksRepository';
+import TaskForm from 'forms/TaskForm';
 
 import useStyles from './useStyles';
 
@@ -70,10 +70,9 @@ const TaskBoard = () => {
 
   const loadColumnMore = (state, page = 1, perPage = 10) => {
     loadColumn(state, page, perPage).then(({ data }) => {
-      const taskState = data.items[0].state;
       setBoardCards((prevState) => ({
         ...prevState,
-        [taskState]: { cards: [...prevState[taskState].cards, ...data.items], meta: data.meta },
+        [state]: { cards: [...prevState[state].cards, ...data.items], meta: data.meta },
       }));
     });
   };
@@ -112,7 +111,6 @@ const TaskBoard = () => {
 
     return TasksRepository.update(task.id, { task: { stateEvent: transition.event } })
       .then((data) => {
-        console.log(data);
         loadColumnInitial(destination.toColumnId);
         loadColumnInitial(source.fromColumnId);
       })
