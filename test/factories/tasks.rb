@@ -7,4 +7,3 @@ FactoryBot.define do
     expired_at { Date.current.tomorrow }
   end
 end
-
