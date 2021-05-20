@@ -52,7 +52,7 @@ const Form = ({ errors, onChange, task, mode }) => {
         value={task.assignee}
         onChange={handleChangeSelect('assignee')}
         isRequired
-        error={has('Assigne', errors)}
+        error={has('Assignee', errors)}
         helperText={errors.author}
       />
     </form>
