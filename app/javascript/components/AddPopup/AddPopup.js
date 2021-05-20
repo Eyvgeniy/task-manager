@@ -13,6 +13,7 @@ import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 
 import TaskForm from 'forms/TaskForm';
+import Form from 'components/Form';
 
 import useStyles from './useStyles';
 
@@ -47,26 +48,7 @@ const AddPopup = ({ onClose, onCreateCard }) => {
           title="Add New Task"
         />
         <CardContent>
-          <div className={styles.form}>
-            <TextField
-              error={has('name', errors)}
-              helperText={errors.name}
-              onChange={handleChangeTextField('name')}
-              value={task.name}
-              label="Name"
-              required
-              margin="dense"
-            />
-            <TextField
-              error={has('description', errors)}
-              helperText={errors.description}
-              onChange={handleChangeTextField('description')}
-              value={task.description}
-              label="Description"
-              required
-              margin="dense"
-            />
-          </div>
+          <Form errors={errors} onChange={changeTask} task={task} />
         </CardContent>
         <CardActions className={styles.actions}>
           <Button disabled={isSaving} onClick={handleCreate} variant="contained" size="small" color="primary">
