@@ -36,6 +36,7 @@ const Task = ({ task, onClick }) => {
 };
 
 Task.propTypes = {
+  task: PropTypes.shape().isRequired,
   onClick: PropTypes.func.isRequired,
 };
 

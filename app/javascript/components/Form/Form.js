@@ -9,12 +9,10 @@ import TaskPresenter from 'presenters/TaskPresenter';
 
 import useStyles from './useStyles';
 
-const Form = ({ errors, onChange, task, mode }) => {
+const Form = ({ errors, onChange, task }) => {
   const handleChangeTextField = (fieldName) => (event) => onChange({ ...task, [fieldName]: event.target.value });
-  const handleChangeSelect = fieldName => user => onChange({ ...task, [fieldName]: user });
+  const handleChangeSelect = (fieldName) => (user) => onChange({ ...task, [fieldName]: user });
   const styles = useStyles();
-
-
 
   return (
     <form className={styles.root}>
@@ -37,7 +35,7 @@ const Form = ({ errors, onChange, task, mode }) => {
         multiline
         margin="dense"
       />
-      {TaskPresenter.author(task) &&
+      {TaskPresenter.author(task) && (
         <UserSelect
           label="Author"
           value={TaskPresenter.author(task)}
@@ -47,7 +45,7 @@ const Form = ({ errors, onChange, task, mode }) => {
           error={has('author', errors)}
           helperText={errors.author}
         />
-      }
+      )}
       <UserSelect
         label="Assignee"
         value={TaskPresenter.assignee(task)}

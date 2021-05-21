@@ -14,7 +14,7 @@ import useStyles from './useStyles';
 const UserSelect = ({ error, label, isClearable, isDisabled, isRequired, onChange, value, helperText }) => {
   const [isFocused, setFocus] = useState(false);
   const styles = useStyles();
-  const handleLoadOptions = inputValue =>
+  const handleLoadOptions = (inputValue) =>
     UsersRepository.index({ q: { firstNameOrLastNameCont: inputValue } }).then(({ data }) => data.items);
 
   return (
@@ -35,7 +35,7 @@ const UserSelect = ({ error, label, isClearable, isDisabled, isRequired, onChang
             onFocus={() => setFocus(true)}
             onBlur={() => setFocus(false)}
             menuPortalTarget={document.body}
-            styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
           />
         </div>
         {helperText && <FormHelperText>{helperText}</FormHelperText>}
@@ -45,14 +45,19 @@ const UserSelect = ({ error, label, isClearable, isDisabled, isRequired, onChang
 };
 
 UserSelect.propTypes = {
-  error: PropTypes.bool,
+  error: PropTypes.bool.isRequired,
   label: PropTypes.string.isRequired,
   isClearable: PropTypes.bool,
   isDisabled: PropTypes.bool,
-  isRequired: PropTypes.bool,
-  onChange: PropTypes.func,
-  value: PropTypes.shape(),
-  helperText: PropTypes.string,
+  isRequired: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.shape().isRequired,
+  helperText: PropTypes.string.isRequired,
+};
+
+UserSelect.defaultProps = {
+  isClearable: false,
+  isDisabled: false,
 };
 
 export default UserSelect;

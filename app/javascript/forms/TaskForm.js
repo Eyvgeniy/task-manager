@@ -1,5 +1,7 @@
 import { pick, propOr } from 'ramda';
 
+import TaskPresenter from 'presenters/TaskPresenter';
+
 export default {
   defaultAttributes(attributes) {
     return {

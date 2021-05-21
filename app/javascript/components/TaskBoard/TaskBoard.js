@@ -110,7 +110,7 @@ const TaskBoard = () => {
     }
 
     return TasksRepository.update(task.id, { task: { stateEvent: transition.event } })
-      .then((data) => {
+      .then(() => {
         loadColumnInitial(destination.toColumnId);
         loadColumnInitial(source.fromColumnId);
       })
