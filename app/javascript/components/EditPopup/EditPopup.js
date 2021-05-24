@@ -20,9 +20,9 @@ import useStyles from './useStyles';
 const EditPopup = ({
   cardId,
   onClose,
-  onDestroyCard,
-  onLoadCard,
-  onUpdateCard,
+  onCardDestroy,
+  onCardLoad,
+  onCardUpdate,
   mode,
 }) => {
   const [task, setTask] = useState(null);
@@ -31,13 +31,13 @@ const EditPopup = ({
   const styles = useStyles();
 
   useEffect(() => {
-    onLoadCard(cardId).then(setTask);
+    onCardLoad(cardId).then(setTask);
   }, []);
 
   const handleCardUpdate = () => {
     setSaving(true);
 
-    onUpdateCard(task).catch((error) => {
+    onCardUpdate(task).catch((error) => {
       setSaving(false);
       setErrors(error || {});
 
@@ -50,10 +50,10 @@ const EditPopup = ({
   const handleCardDestroy = () => {
     setSaving(true);
 
-    onDestroyCard(task).catch((error) => {
+    onCardDestroy(task).catch((error) => {
       setSaving(false);
 
-      alert(`Destruction Failed! Error: ${error.message}`);
+      alert(`Deleting Failed! Error: ${error.message}`);
     });
   };
   const isLoading = isNil(task);
@@ -110,9 +110,9 @@ const EditPopup = ({
 EditPopup.propTypes = {
   cardId: PropTypes.number.isRequired,
   onClose: PropTypes.func.isRequired,
-  onDestroyCard: PropTypes.func.isRequired,
-  onLoadCard: PropTypes.func.isRequired,
-  onUpdateCard: PropTypes.func.isRequired,
+  onCardDestroy: PropTypes.func.isRequired,
+  onCardLoad: PropTypes.func.isRequired,
+  onCardUpdate: PropTypes.func.isRequired,
   mode: PropTypes.string.isRequired,
 };
 

@@ -21,7 +21,6 @@ const UserSelect = ({
   value,
   helperText,
 }) => {
-  const [isFocused, setFocus] = useState(false);
   const styles = useStyles();
   const handleLoadOptions = (inputValue) =>
     UsersRepository.index({ q: { firstNameOrLastNameCont: inputValue } }).then(
@@ -33,7 +32,6 @@ const UserSelect = ({
       <FormControl
         margin="dense"
         disabled={isDisabled}
-        focused={isFocused}
         error={error}
         required={isRequired}
       >
@@ -49,8 +47,6 @@ const UserSelect = ({
             isClearable={isClearable}
             defaultValue={value}
             onChange={onChange}
-            onFocus={() => setFocus(true)}
-            onBlur={() => setFocus(false)}
             menuPortalTarget={document.body}
             styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
           />

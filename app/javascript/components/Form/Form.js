@@ -15,8 +15,8 @@ const MODES = {
 };
 
 const Form = ({ errors, onChange, task, mode }) => {
-  const handleChangeTextField = (fieldName) => (event) =>
-    onChange({ ...task, [fieldName]: event.target.value });
+  const handleChangeTextField = ({ target: { name, value } }) =>
+    onChange({ ...task, [name]: value });
   const handleChangeSelect = (fieldName) => (user) =>
     onChange({ ...task, [fieldName]: user });
   const styles = useStyles();
@@ -26,18 +26,20 @@ const Form = ({ errors, onChange, task, mode }) => {
       <TextField
         error={has('name', errors)}
         helperText={errors.name}
-        onChange={handleChangeTextField('name')}
+        onChange={handleChangeTextField}
         value={TaskPresenter.name(task)}
         label="Name"
+        name="name"
         required
         margin="dense"
       />
       <TextField
         error={has('description', errors)}
         helperText={errors.description}
-        onChange={handleChangeTextField('description')}
+        onChange={handleChangeTextField}
         value={TaskPresenter.description(task)}
         label="Description"
+        name="description"
         required
         multiline
         margin="dense"
