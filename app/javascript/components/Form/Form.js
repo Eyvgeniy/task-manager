@@ -9,6 +9,11 @@ import TaskPresenter from 'presenters/TaskPresenter';
 
 import useStyles from './useStyles';
 
+const MODES = {
+  ADD: 'add',
+  EDIT: 'edit',
+};
+
 const Form = ({ errors, onChange, task, mode }) => {
   const handleChangeTextField = (fieldName) => (event) =>
     onChange({ ...task, [fieldName]: event.target.value });
@@ -37,7 +42,7 @@ const Form = ({ errors, onChange, task, mode }) => {
         multiline
         margin="dense"
       />
-      {mode === 'edit' && (
+      {mode === MODES.EDIT && (
         <UserSelect
           label="Author"
           value={TaskPresenter.author(task)}
