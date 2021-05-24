@@ -17,7 +17,14 @@ import TaskPresenter from 'presenters/TaskPresenter';
 
 import useStyles from './useStyles';
 
-const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard }) => {
+const EditPopup = ({
+  cardId,
+  onClose,
+  onDestroyCard,
+  onLoadCard,
+  onUpdateCard,
+  mode,
+}) => {
   const [task, setTask] = useState(null);
   const [isSaving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
@@ -46,7 +53,7 @@ const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
     onDestroyCard(task).catch((error) => {
       setSaving(false);
 
-      alert(`Destrucion Failed! Error: ${error.message}`);
+      alert(`Destruction Failed! Error: ${error.message}`);
     });
   };
   const isLoading = isNil(task);
@@ -72,7 +79,7 @@ const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
               <CircularProgress />
             </div>
           ) : (
-            <Form errors={errors} onChange={setTask} task={task} />
+            <Form errors={errors} onChange={setTask} task={task} mode={mode} />
           )}
         </CardContent>
         <CardActions className={styles.actions}>
@@ -106,6 +113,7 @@ EditPopup.propTypes = {
   onDestroyCard: PropTypes.func.isRequired,
   onLoadCard: PropTypes.func.isRequired,
   onUpdateCard: PropTypes.func.isRequired,
+  mode: PropTypes.string.isRequired,
 };
 
 export default EditPopup;

@@ -9,9 +9,11 @@ import TaskPresenter from 'presenters/TaskPresenter';
 
 import useStyles from './useStyles';
 
-const Form = ({ errors, onChange, task }) => {
-  const handleChangeTextField = (fieldName) => (event) => onChange({ ...task, [fieldName]: event.target.value });
-  const handleChangeSelect = (fieldName) => (user) => onChange({ ...task, [fieldName]: user });
+const Form = ({ errors, onChange, task, mode }) => {
+  const handleChangeTextField = (fieldName) => (event) =>
+    onChange({ ...task, [fieldName]: event.target.value });
+  const handleChangeSelect = (fieldName) => (user) =>
+    onChange({ ...task, [fieldName]: user });
   const styles = useStyles();
 
   return (
@@ -35,7 +37,7 @@ const Form = ({ errors, onChange, task }) => {
         multiline
         margin="dense"
       />
-      {TaskPresenter.author(task) && (
+      {mode === 'edit' && (
         <UserSelect
           label="Author"
           value={TaskPresenter.author(task)}
@@ -52,7 +54,7 @@ const Form = ({ errors, onChange, task }) => {
         onChange={handleChangeSelect('assignee')}
         isRequired
         error={has('Assignee', errors)}
-        helperText={errors.author}
+        helperText={errors.assignee}
       />
     </form>
   );
@@ -61,6 +63,7 @@ const Form = ({ errors, onChange, task }) => {
 Form.propTypes = {
   onChange: PropTypes.func.isRequired,
   task: PropTypes.shape().isRequired,
+  mode: PropTypes.string.isRequired,
   errors: PropTypes.shape({
     name: PropTypes.arrayOf(PropTypes.string),
     description: PropTypes.arrayOf(PropTypes.string),
