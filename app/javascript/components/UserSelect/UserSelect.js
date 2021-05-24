@@ -11,15 +11,32 @@ import UserPresenter from 'presenters/UserPresenter';
 
 import useStyles from './useStyles';
 
-const UserSelect = ({ error, label, isClearable, isDisabled, isRequired, onChange, value, helperText }) => {
+const UserSelect = ({
+  error,
+  label,
+  isClearable,
+  isDisabled,
+  isRequired,
+  onChange,
+  value,
+  helperText,
+}) => {
   const [isFocused, setFocus] = useState(false);
   const styles = useStyles();
   const handleLoadOptions = (inputValue) =>
-    UsersRepository.index({ q: { firstNameOrLastNameCont: inputValue } }).then(({ data }) => data.items);
+    UsersRepository.index({ q: { firstNameOrLastNameCont: inputValue } }).then(
+      ({ data }) => data.items
+    );
 
   return (
     <>
-      <FormControl margin="dense" disabled={isDisabled} focused={isFocused} error={error} required={isRequired}>
+      <FormControl
+        margin="dense"
+        disabled={isDisabled}
+        focused={isFocused}
+        error={error}
+        required={isRequired}
+      >
         <InputLabel shrink>{label}</InputLabel>
         <div className={styles.select}>
           <AsyncSelect
@@ -51,13 +68,13 @@ UserSelect.propTypes = {
   isDisabled: PropTypes.bool,
   isRequired: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.shape().isRequired,
-  helperText: PropTypes.string.isRequired,
 };
 
 UserSelect.defaultProps = {
   isClearable: false,
   isDisabled: false,
+  helperText: '',
+  value: '',
 };
 
 export default UserSelect;
