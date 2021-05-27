@@ -11,6 +11,8 @@ import UserPresenter from 'presenters/UserPresenter';
 
 import useStyles from './useStyles';
 
+const modalZIndex = 1300;
+
 const UserSelect = ({
   error,
   label,
@@ -48,7 +50,9 @@ const UserSelect = ({
             defaultValue={value}
             onChange={onChange}
             menuPortalTarget={document.body}
-            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+            styles={{
+              menuPortal: (base) => ({ ...base, zIndex: modalZIndex }),
+            }}
           />
         </div>
         {helperText && <FormHelperText>{helperText}</FormHelperText>}
