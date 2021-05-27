@@ -4,12 +4,12 @@ import TasksRepository from 'repositories/TasksRepository';
 import { useDispatch } from 'react-redux';
 import { changeColumn } from '@lourenci/react-kanban';
 
-import { STATES } from 'config';
+import { STATES } from 'presenters/TaskPresenter';
 
 const initialState = {
   board: {
     columns: STATES.map((column) => ({
-      id: column.key,
+      id: column.state,
       title: column.value,
       cards: [],
       meta: {},
