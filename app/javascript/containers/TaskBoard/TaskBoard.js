@@ -18,6 +18,7 @@ import useStyles from './useStyles';
 
 const MODES = {
   ADD: 'add',
+  EDIT: 'edit',
   NONE: 'none',
 };
 
@@ -43,7 +44,9 @@ const TaskBoard = () => {
     setOpenedTaskId(null);
   };
 
-  const loadColumnMore = () => {};
+  const loadColumnMore = (state, page = 1, perPage = 10) => {
+    loadColumn(state, page, perPage);
+  };
 
   const handleCardDragEnd = (task, source, destination) => {
     const transition = task.transitions.find(
@@ -72,11 +75,24 @@ const TaskBoard = () => {
       handleClose();
     });
   };
-  const handleTaskLoad = (id) => {
+  const handleTaskLoad = (id) =>
     TasksRepository.show(id).then(({ data: { task } }) => task);
+
+  const handleTaskUpdate = (task) => {
+    const attributes = TaskForm.attributesToSubmit(task);
+
+    return TasksRepository.update(TaskPresenter.id(task), attributes).then(
+      () => {
+        loadColumn(TaskPresenter.state(task));
+        handleClose();
+      }
+    );
   };
-  const handleTaskUpdate = () => {};
-  const handleTaskDestroy = () => {};
+  const handleTaskDestroy = (task) =>
+    TasksRepository.destroy(TaskPresenter.id(task)).then(() => {
+      loadColumn(TaskPresenter.state(task));
+      handleClose();
+    });
 
   return (
     <>
