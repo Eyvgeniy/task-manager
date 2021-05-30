@@ -23,7 +23,7 @@ const MODES = {
 };
 
 const TaskBoard = () => {
-  const { board, loadBoard, loadColumn } = useTasks();
+  const { board, loadBoard, loadColumn, loadColumnMore } = useTasks();
   const [mode, setMode] = useState(MODES.NONE);
   const [openedTaskId, setOpenedTaskId] = useState(null);
   const styles = useStyles();
@@ -44,8 +44,8 @@ const TaskBoard = () => {
     setOpenedTaskId(null);
   };
 
-  const loadColumnMore = (state, page = 1, perPage = 10) => {
-    loadColumn(state, page, perPage);
+  const handleColumnMore = (state, page = 1, perPage = 10) => {
+    loadColumnMore(state, page, perPage);
   };
 
   const handleCardDragEnd = (task, source, destination) => {
@@ -112,7 +112,7 @@ const TaskBoard = () => {
           <Task onClick={handleEditPopupOpen} task={card} />
         )}
         renderColumnHeader={(column) => (
-          <ColumnHeader column={column} onLoadMore={loadColumnMore} />
+          <ColumnHeader column={column} onLoadMore={handleColumnMore} />
         )}
       >
         {board}
