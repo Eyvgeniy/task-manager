@@ -8,6 +8,8 @@ import AddPopup from 'components/AddPopup';
 import EditPopup from 'components/EditPopup';
 import ColumnHeader from 'components/ColumnHeader';
 import TasksRepository from 'repositories/TasksRepository';
+import TaskForm from 'forms/TaskForm';
+import TaskPresenter from 'presenters/TaskPresenter';
 
 import useTasks from 'hooks/store/useTasks';
 
@@ -27,11 +29,11 @@ const TaskBoard = () => {
 
   useEffect(loadBoard, []);
 
-  const handleOpenAddPopup = () => {
+  const handleAddPopupOpen = () => {
     setMode(MODES.ADD);
   };
 
-  const handleOpenEditPopup = (task) => {
+  const handleEditPopupOpen = (task) => {
     setOpenedTaskId(task.id);
     setMode(MODES.EDIT);
   };
@@ -63,15 +65,23 @@ const TaskBoard = () => {
       });
   };
 
-  const handleTaskCreate = () => {};
-  const handleTaskLoad = () => {};
+  const handleTaskCreate = (params) => {
+    const attributes = TaskForm.attributesToSubmit(params);
+    return TasksRepository.create(attributes).then(({ data: { task } }) => {
+      loadColumn(TaskPresenter.state(task));
+      handleClose();
+    });
+  };
+  const handleTaskLoad = (id) => {
+    TasksRepository.show(id).then(({ data: { task } }) => task);
+  };
   const handleTaskUpdate = () => {};
   const handleTaskDestroy = () => {};
 
   return (
     <>
       <Fab
-        onClick={handleOpenAddPopup}
+        onClick={handleAddPopupOpen}
         className={styles.addButton}
         color="primary"
         aria-label="add"
@@ -83,7 +93,7 @@ const TaskBoard = () => {
         disableColumnDrag
         onCardDragEnd={handleCardDragEnd}
         renderCard={(card) => (
-          <Task onClick={handleOpenEditPopup} task={card} />
+          <Task onClick={handleEditPopupOpen} task={card} />
         )}
         renderColumnHeader={(column) => (
           <ColumnHeader column={column} onLoadMore={loadColumnMore} />
@@ -94,14 +104,14 @@ const TaskBoard = () => {
 
       {mode === MODES.ADD && (
         <AddPopup
-          onCreateCard={handleTaskCreate}
+          onCardCreate={handleTaskCreate}
           onClose={handleClose}
           mode={MODES.ADD}
         />
       )}
       {mode === MODES.EDIT && (
         <EditPopup
-          onLoadCard={handleTaskLoad}
+          onCardLoad={handleTaskLoad}
           onCardDestroy={handleTaskDestroy}
           onCardUpdate={handleTaskUpdate}
           onClose={handleClose}
