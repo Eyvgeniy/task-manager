@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import KanbanBoard from '@lourenci/react-kanban';
+import '@lourenci/react-kanban/dist/styles.css';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -13,7 +14,6 @@ import TaskPresenter from 'presenters/TaskPresenter';
 
 import useTasks from 'hooks/store/useTasks';
 
-import '@lourenci/react-kanban/dist/styles.css';
 import useStyles from './useStyles';
 
 const MODES = {
