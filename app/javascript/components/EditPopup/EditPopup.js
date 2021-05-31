@@ -12,24 +12,32 @@ import IconButton from '@material-ui/core/IconButton';
 import Modal from '@material-ui/core/Modal';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Form from './Form';
+import Form from 'components/Form';
+import TaskPresenter from 'presenters/TaskPresenter';
 
 import useStyles from './useStyles';
 
-const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard }) => {
+const EditPopup = ({
+  cardId,
+  onClose,
+  onCardDestroy,
+  onCardLoad,
+  onCardUpdate,
+  mode,
+}) => {
   const [task, setTask] = useState(null);
   const [isSaving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
   const styles = useStyles();
 
   useEffect(() => {
-    onLoadCard(cardId).then(setTask);
+    onCardLoad(cardId).then(setTask);
   }, []);
 
   const handleCardUpdate = () => {
     setSaving(true);
 
-    onUpdateCard(task).catch((error) => {
+    onCardUpdate(task).catch((error) => {
       setSaving(false);
       setErrors(error || {});
 
@@ -42,10 +50,10 @@ const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
   const handleCardDestroy = () => {
     setSaving(true);
 
-    onDestroyCard(task).catch((error) => {
+    onCardDestroy(task).catch((error) => {
       setSaving(false);
 
-      alert(`Destrucion Failed! Error: ${error.message}`);
+      alert(`Deleting Failed! Error: ${error.message}`);
     });
   };
   const isLoading = isNil(task);
@@ -59,7 +67,11 @@ const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
               <CloseIcon />
             </IconButton>
           }
-          title={isLoading ? 'Your task is loading. Please be patient.' : `Task # ${task.id} [${task.name}]`}
+          title={
+            isLoading
+              ? 'Your task is loading. Please be patient.'
+              : `Task # ${TaskPresenter.id(task)} [${TaskPresenter.name(task)}]`
+          }
         />
         <CardContent>
           {isLoading ? (
@@ -67,7 +79,7 @@ const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
               <CircularProgress />
             </div>
           ) : (
-            <Form errors={errors} onChange={setTask} task={task} />
+            <Form errors={errors} onChange={setTask} task={task} mode={mode} />
           )}
         </CardContent>
         <CardActions className={styles.actions}>
@@ -98,9 +110,10 @@ const EditPopup = ({ cardId, onClose, onDestroyCard, onLoadCard, onUpdateCard })
 EditPopup.propTypes = {
   cardId: PropTypes.number.isRequired,
   onClose: PropTypes.func.isRequired,
-  onDestroyCard: PropTypes.func.isRequired,
-  onLoadCard: PropTypes.func.isRequired,
-  onUpdateCard: PropTypes.func.isRequired,
+  onCardDestroy: PropTypes.func.isRequired,
+  onCardLoad: PropTypes.func.isRequired,
+  onCardUpdate: PropTypes.func.isRequired,
+  mode: PropTypes.string.isRequired,
 };
 
 export default EditPopup;
